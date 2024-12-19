@@ -1,9 +1,7 @@
-from sqlalchemy import Column, Integer, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
-from datetime import datetime
-from lib.db import Base
+from __init__ import CURSOR, CONN
+from customer import Customer
 
-class Order(Base):
+class Order:
     __tablename__ = 'orders'
 
     id = Column(Integer, primary_key=True)

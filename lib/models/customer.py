@@ -18,7 +18,7 @@ class Customer:
 
     @name.setter
     def name(self, name):
-        if isinstance(name, str) and len(name) == 0:
+        if isinstance(name, str) and len(name) != 0:
             self.name = name
         else:    
             raise ValueError("Name must be a non-empty string.")
@@ -29,7 +29,7 @@ class Customer:
 
     @email.setter
     def email(self, email):
-        if isinstance(email, str) and len(email) == 0:
+        if isinstance(email, str) and len(email) != 0:
             self.email = email
         else:    
             raise ValueError("Email must be a non-empty string.")

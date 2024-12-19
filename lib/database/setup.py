@@ -5,9 +5,9 @@ def create_tables():
     CURSOR.execute("""
         CREATE TABLE IF NOT EXISTS customer (
             id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            phone INTEGER NOT NULL
+            name TEXT ,
+            email TEXT,
+            phone INTEGER
         )
     """)
 
@@ -15,10 +15,10 @@ def create_tables():
     CURSOR.execute("""
         CREATE TABLE IF NOT EXISTS 'order' (
             id INTEGER PRIMARY KEY,
-            customer_id INTEGER NOT NULL,
-            product_id INTEGER NOT NULL,
-            quantity INTEGER NOT NULL,
-            total_price REAL NOT NULL,
+            customer_id INTEGER ,
+            product_id INTEGER ,
+            quantity INTEGER ,
+            total_price INTEGER,
             FOREIGN KEY (customer_id) REFERENCES customer(id),
             FOREIGN KEY (product_id) REFERENCES product(id)
         )
@@ -28,10 +28,10 @@ def create_tables():
     CURSOR.execute("""
         CREATE TABLE IF NOT EXISTS product (
             id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL,
+            name TEXT ,
             description TEXT,
-            price REAL NOT NULL,
-            stock INTEGER NOT NULL
+            price INTEGER ,
+            stock INTEGER
         )
     """)
 
