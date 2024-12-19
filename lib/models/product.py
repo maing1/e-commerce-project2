@@ -1,5 +1,4 @@
 from __init__ import CURSOR, CONN
-from customer import Customer
 
 class Product:
     all = {}
