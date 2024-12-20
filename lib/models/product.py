@@ -1,4 +1,4 @@
-from __init__ import CURSOR, CONN
+from models.__init__ import CURSOR, CONN
 
 class Product:
     all = {}
@@ -60,11 +60,11 @@ class Product:
 
     @stock.setter
     def stock(self, stock):
-        if isinstance(stock, int) and len(stock) < 5:
+        if isinstance(stock, int) and stock >= 0 :
             self._stock = stock
         else:
             raise ValueError(
-                "stock must be a non-empty string"
+                "Stock must be a non-negative integer"
             )
 
     @classmethod
@@ -81,6 +81,14 @@ class Product:
         CONN.commit()
 
     @classmethod
+    def drop_table(cls):
+        sql = """
+            DROP TABLE IF EXISTS product;
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    @classmethod
     def add_product(cls, name, description, price, stock):
         sql = """
             INSERT INTO product (name, description, price, stock)
@@ -91,7 +99,7 @@ class Product:
         CONN.commit()
 
     @classmethod
-    def display_all_products(cls):
+    def display_all_products(self):
         sql = """
             SELECT * FROM product
         """
@@ -105,7 +113,7 @@ class Product:
             print("\nNo products found.")
 
     @classmethod
-    def delete_product_by_id(cls, product_id):
+    def delete_product_by_id(self, product_id):
         sql = """
             DELETE FROM product
             WHERE id = ?
@@ -113,3 +121,17 @@ class Product:
         CURSOR.execute(sql, (product_id,))
         CONN.commit()
         print(f"Product with ID {product_id} has been deleted.")
+
+    @classmethod
+    def update_stock(self, product_id, new_stock):
+        if isinstance(new_stock, int) and new_stock >= 0:
+            sql = """
+                UPDATE product
+                SET stock = ?
+                WHERE id = ?
+            """
+            CURSOR.execute(sql, (new_stock, product_id))
+            CONN.commit()
+            print(f"Stock updated for product ID {product_id}. New stock: {new_stock}")
+        else:
+            raise ValueError("New stock must be a non-negative integer")

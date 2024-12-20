@@ -1,6 +1,6 @@
-from __init__ import CURSOR, CONN
-from customer import Customer
-from product import Product
+from models.__init__ import CURSOR, CONN
+from models.customer import Customer
+from models.product import Product
 
 class Order:
 
@@ -12,6 +12,31 @@ class Order:
         self.product_id = product_id
         self.quantity = quantity
         self.total_price = total_price
+
+    @classmethod
+    def create_table(cls):
+        sql = """
+        CREATE TABLE IF NOT EXISTS 'order' (
+            id INTEGER PRIMARY KEY,
+            customer_id INTEGER ,
+            product_id INTEGER ,
+            quantity INTEGER ,
+            total_price INTEGER,
+            FOREIGN KEY (customer_id) REFERENCES customer(id),
+            FOREIGN KEY (product_id) REFERENCES product(id)
+        )
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    @classmethod
+    def drop_table(cls):
+        sql = """
+            DROP TABLE IF EXISTS order;
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
 
     @classmethod
     def create_order(self, customer_id, product_id, quantity):
@@ -40,7 +65,7 @@ class Order:
 
         # Insert order into database
         sql = """
-            INSERT INTO orders (customer_id, product_id, quantity, total_price)
+            INSERT INTO order (customer_id, product_id, quantity, total_price)
             VALUES (?, ?, ?, ?)
         """
   
@@ -99,7 +124,6 @@ class Order:
             WHERE id = ?
         """
         row = CURSOR.execute(sql, (order_id,)).fetchone()
-        CONN.close()
 
         if row:
             return Order(row[0], row[1], row[2], row[3], row[4])
