@@ -100,3 +100,9 @@ class Customer:
         else:
             print(f"Customer with ID {customer_id} does not exist.")
 
+    @classmethod
+    def instance_from_db(cls, row):
+        """Converts a database row into a Customer instance."""
+        id, name, email, address = row
+        return cls(id, name, email, address)
+

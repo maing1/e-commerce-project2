@@ -4,12 +4,12 @@ class Product:
     all = {}
 
     def __init__(self, name, description, price, stock, id=None):
-        self.id = id
-        self.name = name
-        self.description = description
-        self.price = price
-        self.stock = stock
-
+        self._id = id
+        self._name = name
+        self._description = description
+        self._price = price
+        self._stock = stock
+        
     def __repr__(self):
         return (
         f"<Employee {self.id}: {self.name}, {self.description}, {self.price}, {self.stock} >"
@@ -21,7 +21,7 @@ class Product:
 
     @name.setter
     def name(self, name):
-        if isinstance(name, str) and len(name) != 0:
+        if isinstance(name, str) and len(name) > 0:
             self._name = name
         else:
             raise ValueError(
@@ -47,11 +47,11 @@ class Product:
 
     @price.setter
     def price(self, price):
-        if isinstance(price, int) and len(price) != 0:
+        if isinstance(price, int) and price > 0:
             self._price = price
         else:
             raise ValueError(
-                "price must be a non-empty integer"
+                "price must be a positive integer"
             )
         
     @property
@@ -99,18 +99,20 @@ class Product:
         CONN.commit()
 
     @classmethod
-    def display_all_products(self):
+    def display_all_products(cls):
+        """Fetch all products and return them as a list of Product instances."""
         sql = """
             SELECT * FROM product
         """
         rows = CURSOR.execute(sql).fetchall()
 
-        if rows:
-            print("\nAll Products:")
-            for row in rows:
-                print(f"ID: {row[0]}, Name: {row[1]}, Description: {row[2]}, Price: {row[3]}, Stock: {row[4]}")
-        else:
-            print("\nNo products found.")
+        if not rows:
+            return []  # Return an empty list if no products found
+
+        # Construct Product instances from rows
+        products = [cls(row[1], row[2], float(row[3]), int(row[4]), id=row[0]) for row in rows]
+        return products
+
 
     @classmethod
     def delete_product_by_id(self, product_id):
@@ -135,3 +137,23 @@ class Product:
             print(f"Stock updated for product ID {product_id}. New stock: {new_stock}")
         else:
             raise ValueError("New stock must be a non-negative integer")
+        
+    @classmethod
+    def find_by_id(cls, id):
+        sql = """
+        SELECT * FROM product WHERE id = ?
+        """
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def instance_from_db(cls, row):
+        id, name, description, price, stock = row
+        return cls(id, name, description, price, stock)
+
+    # @classmethod
+    # def instance_from_db(cls, row):
+    #     """Converts a database row into a Product instance."""
+    #     id, name, description, price, stock = row
+    #     return cls(id, name, description, price, stock)
+    

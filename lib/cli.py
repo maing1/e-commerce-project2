@@ -1,5 +1,6 @@
 from helpers import (
     exit_program,
+    create_tables,
     create_product,
     list_products,
     add_customer,
@@ -10,6 +11,8 @@ from helpers import (
 )
 
 def main():
+    create_tables()
+    
     while True:
         menu()
         choice = input("> ")

@@ -6,6 +6,14 @@ def exit_program():
     print("Goodbye!")
     exit()
 
+def create_tables():
+    """Create tables for Product, Customer, and Order models."""
+    print("Creating tables...")
+    Product.create_table()
+    Customer.create_table()
+    Order.create_table()
+    print("All tables created successfully!")
+
 def create_product():
     name = input("Enter the product name: ")
     description = input("Enter the product description: ")
@@ -15,9 +23,15 @@ def create_product():
     print(f"Product '{name}' created!")
 
 def list_products():
-    product = Product.display_all_products()
-    for product in product:
-        print(f"{product.id}: {product.name} - ${product.price} - Stock: {product.stock}")
+    """Display all products."""
+    print("\nListing all products:")
+    products = Product.display_all_products()
+    if not products:
+        print("No products available.")
+        return
+
+    for product in products:
+        print(f"id: {product.id}, Name: {product.name}, Price: ${float(product.price)}, Stock: {product.stock}")
 
 def add_customer():
     name = input("Enter customer name: ")
@@ -58,17 +72,14 @@ def create_order():
         return  # Exit the function if quantity is invalid
 
     # If all validations pass, create the order
-    order = Order(None, None, None, None, None)
-    order.create_order(customer_id, product_id, quantity)
+    Order.create_order(customer_id, product_id, quantity)
 
 
 def display_orders():
-    order = Order(None, None, None, None, None)
-    order.display_all_orders()
+    Order.display_all_orders()
 
 def delete_order():
     order_id = int(input("Enter order ID to delete: "))
-    order = Order(None, None, None, None, None)
-    order.delete_order_by_id(order_id)
+    Order.delete_order_by_id(order_id)
 
 
