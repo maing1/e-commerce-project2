@@ -80,11 +80,11 @@ class Order:
         CURSOR.execute(sql, (customer_id, product_id, quantity, total_price))
 
         # Update product stock
-        product.update_stock(product.id, product.stock - quantity)
+        product.update_stock(product_id, product.stock - quantity)
         
         CONN.commit()
         # print(f"Order: {customer.name} -> {product.name} x{quantity} - ${total_price:.2f}")
-        print(f"Order created: Customer {customer.name} -> Product {product.name} (x{quantity}) - Total: ${total_price:.2f}")
+        print(f"Order created: Customer {customer_id} -> Product {product_id} (x{quantity}) - Total: ${total_price:.2f}")
 
 
     @classmethod

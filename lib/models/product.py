@@ -98,21 +98,25 @@ class Product:
         CURSOR.execute(sql, (name, description, price, stock))
         CONN.commit()
 
+    # @classmethod
+    # def display_all_products(cls):
+    #     """Fetch all products and return them as a list of Product instances."""
+    #     sql = """
+    #         SELECT * FROM product
+    #     """
+    #     rows = CURSOR.execute(sql).fetchall()
+
+    #     if not rows:
+    #         return []  # Return an empty list if no products found
+
+    #     # Construct Product instances from rows
+    #     products = [cls(row[1], row[2], float(row[3]), int(row[4]), id=row[0]) for row in rows]
+    #     return products
+
     @classmethod
     def display_all_products(cls):
-        """Fetch all products and return them as a list of Product instances."""
-        sql = """
-            SELECT * FROM product
-        """
-        rows = CURSOR.execute(sql).fetchall()
-
-        if not rows:
-            return []  # Return an empty list if no products found
-
-        # Construct Product instances from rows
-        products = [cls(row[1], row[2], float(row[3]), int(row[4]), id=row[0]) for row in rows]
-        return products
-
+        sql = "SELECT * FROM product"
+        return CURSOR.execute(sql).fetchall()
 
     @classmethod
     def delete_product_by_id(self, product_id):

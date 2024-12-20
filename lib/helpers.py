@@ -31,7 +31,7 @@ def list_products():
         return
 
     for product in products:
-        print(f"id: {product.id}, Name: {product.name}, Price: ${float(product.price)}, Stock: {product.stock}")
+        print(f"ID: {product[0]}, Name: {product[1]}, Description: {product[2]}, Price: ${product[3]}, Stock: {product[4]}")
 
 def add_customer():
     name = input("Enter customer name: ")
@@ -47,6 +47,22 @@ def add_product():
     stock = int(input("Enter product stock quantity: "))
     Product.add_product(name, description, price, stock)
     print(f"Product {name} added successfully.")
+
+def update_stock():
+    """Update the stock of a product."""
+    product_id = int(input("Enter the product ID: "))
+    new_stock = int(input("Enter the new stock quantity: "))
+
+    # Find the product by ID
+    product = Product.find_by_id(product_id)
+    if not product:
+        print(f"Product with ID {product_id} does not exist.")
+        return
+
+    # Update the stock
+    Product.update_stock(product_id, new_stock)
+    print(f"Stock for '{product.name}' has been updated to {new_stock}.")
+
 
 def create_order():
     customer_id = int(input("Enter customer ID: "))

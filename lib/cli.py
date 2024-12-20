@@ -5,6 +5,7 @@ from helpers import (
     list_products,
     add_customer,
     add_product,
+    update_stock,
     create_order,
     display_orders,
     delete_order
@@ -12,7 +13,7 @@ from helpers import (
 
 def main():
     create_tables()
-    
+
     while True:
         menu()
         choice = input("> ")
@@ -27,10 +28,12 @@ def main():
         elif choice == "4":
             add_product()
         elif choice == "5":
-            create_order()
+            update_stock()
         elif choice == "6":
-            display_orders()
+            create_order()
         elif choice == "7":
+            display_orders()
+        elif choice == "8":
             delete_order()
         else:
             print("Invalid choice. Please try again.")
@@ -43,9 +46,10 @@ def menu():
     print("2. List all products")
     print("3. Add a new customer")
     print("4. Add a new product (alternate)")
-    print("5. Create a new order")
-    print("6. Display all orders")
-    print("7. Delete an order")
+    print("5. Update Product Stock")
+    print("6. Create a new order")
+    print("7. Display all orders")
+    print("8. Delete an order")
 
 if __name__ == "__main__":
     main()
